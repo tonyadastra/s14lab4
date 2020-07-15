@@ -2,6 +2,7 @@
 
 {% block styles %}
     <link href="{{ url_for('static', filename='./css/index.css') }}" rel="stylesheet">
+{#    <link href="{{ url_for('static', filename='./css/bootstrap.min.css') }}" rel="stylesheet">#}
 {% endblock %}
 
 {% block scripts %}
@@ -17,6 +18,12 @@
         <h1>D3 from the DB</h1>
         <h2 id="users">Users: </h2>
     </header>
+    <div>
+        <div class="text-center">
+            <h1>CSCI S-14A Building Interactive Web Applications and Data Analysis</h1>
+            <p>Homework 3</p>
+        </div>
+    </div>
     <div class="slide">
         <div id="vis1" class="vis"></div>
         <div id="vis2" class="vis"></div>

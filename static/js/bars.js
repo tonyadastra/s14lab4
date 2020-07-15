@@ -139,7 +139,7 @@ class Bars {
                             .attr('width', Math.floor(w * 0.8))
                             .attr('height', vis.gH - h)
                             .attr('x', Math.floor(w * 0.1))
-                            .attr('fill', 'rgba(255, 103, 0, 1)');
+                            .attr('fill', 'rgb(255,103,0)');
 
                     })
             );

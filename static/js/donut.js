@@ -5,6 +5,7 @@ class Donut {
 
     //Variables
     langcount = [];
+    color_fill = null;
 
 
     // Elements
@@ -20,7 +21,8 @@ class Donut {
 
     // Tools
     color = d3.scaleOrdinal()
-        .range(["#3fb4bf", "#b46cc2", "#2975c7", "#c95a1e", "#a05d56", "#53e6a1"])
+        .range(["#3fb4bf", "#e2248b", "#2975c7",
+            "#ea5a2d", "#5f42a3", "#53e6a1"])
 
     /*
     Constructor
@@ -50,8 +52,6 @@ class Donut {
             .attr('height', vis.svgH);
         vis.g = vis.svg.append('g')
             .attr("transform", "translate(" + vis.svgW / 2 + "," + vis.svgH / 2 + ")");
-            // .style("transform", `translate(${vis.svgW / 2}px, ${vis.svgH / 2}px)`);
-            // .style('transform', `translate(${vis.gMargin.left}px, ${vis.gMargin.top}px)`);
 
         // Now wrangle
         vis.wrangle();
@@ -67,23 +67,15 @@ class Donut {
         const vis = this;
 
         // Map variables
+        // .object would make it return in the same format needed for pie chart
         vis.langcount = d3.nest()
             .key(function(d) { return d.prog_lang})
             .rollup(function (v) { return v.length })
             .object(this.data);
-        console.log(vis.langcount)
+        // console.log(vis.langcount)
 
-        // for (let i = 0; i < vis.langcount.length; i++){
-        //     vis.donut_data.push([vis.langcount[i].key, vis.langcount[i].value]);
-        // }
-        // console.log(vis.donut_data)
-
-
-        // Map colors
-
-
-        // Calculate the position of each pie
-
+        // Maps colors
+        vis.color_fill = vis.color.domain(vis.langcount);
 
         // Now render
         vis.render();
@@ -98,15 +90,28 @@ class Donut {
         // Define this vis
         const vis = this;
 
-        var color_fill = vis.color.domain(vis.langcount);
-
+        // Calculates and returns the position of each pie
+        /** d.value has to be in the form of {"key": "value"}
+         * for example: {js: 12}. This transformation is made
+         * using .object(this.data) */
         var pie = d3.pie()
           .value(function(d) {return d.value; });
         var data_ready = pie(d3.entries(vis.langcount));
+        //Use console.log to check data
         console.log(data_ready)
 
+        // Adds a div to html, reposition to the center of the page using css,
+        // returns programming language
+        var div = d3.select("body").append("div")
+            .attr("class", "tooltip-donut")
+            .style("opacity", 0);
 
+        // Adds another div to html, returns number of people
+        var divCount = d3.select("body").append("div")
+            .attr("class", "tooltip-donut-2")
+            .style("opacity", 0);
 
+        // Displays the donut chart
         vis.g.selectAll('whatever')
           .data(data_ready)
           .enter()
@@ -115,10 +120,54 @@ class Donut {
             .innerRadius(100)         // This is the size of the donut hole
             .outerRadius(150)
           )
-          .attr('fill', function(d){ return(color_fill(d.data.key)) })
-          .attr("stroke", "black")
-          .style("stroke-width", "2px")
-          .style("opacity", 0.7)
+            .attr('fill', function(d){ return(vis.color_fill(d.data.key)) })
+            .attr("stroke", "black")
+            .style("stroke-width", "1.7px")
+            // .style("opacity", 0.9)
 
+            /** Adds effect (reduce opacity) when hovering
+             * Define type(programming languages) and count(number of people)
+             */
+            .on('mouseover', function (d, i) {
+                d3.select(this).transition()
+                    .duration('50')
+                    .attr('opacity', '0.65');
+
+                // Mouseover -> show textbox = set opacity to 1
+                div.transition()
+                   .duration(50)
+                   .style("opacity", 1);
+                divCount.transition()
+                   .duration(50)
+                   .style("opacity", 1);
+
+                // Define type
+                let type = (d.data.key);
+                // .html command transmits the data to html
+                div.html(type)
+                // Define count
+                let count = (d.value);
+                // .html command transmits the data to html
+                divCount.html(count)
+
+                // The following commands are needed for tool-kit
+               // .style("left", (d3.event.pageX + 10) + "px")
+               // .style("top", (d3.event.pageY - 15) + "px");
+            })
+
+            /** Removes effect when mouseout */
+            .on('mouseout', function (d, i) {
+                d3.select(this).transition()
+                    .duration('50')
+                    .attr('opacity', '0.9');
+
+                // Mouseout -> hide textbox = set opacity to 0
+                div.transition()
+                    .duration('50')
+                    .style("opacity", 0);
+                divCount.transition()
+                    .duration('50')
+                    .style("opacity", 0);
+            })
     }
 }
