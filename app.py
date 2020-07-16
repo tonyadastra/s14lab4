@@ -8,10 +8,8 @@ app = Flask(__name__)
 # Quote following line to run at local
 heroku = Heroku(app)
 # Unquote following line to run at local
-
 # load_dotenv('.env')
 
-# app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/homework_users_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "s14a-key"
