@@ -2,6 +2,13 @@ from dotenv import load_dotenv
 from flask import Flask, render_template, jsonify
 from models.homeworkuser import Db, HomeworkUser
 from os import environ
+# Quote following line to run at local
+from flask_heroku import Heroku
+app = Flask(__name__)
+# Quote following line to run at local
+heroku = Heroku(app)
+# Unquote following line to run at local
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/usersdb'
 
 load_dotenv('.env')
 
