@@ -8,7 +8,6 @@ app = Flask(__name__)
 # Quote following line to run at local
 heroku = Heroku(app)
 # Unquote following line to run at local
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/usersdb'
 
 # load_dotenv('.env')
 
