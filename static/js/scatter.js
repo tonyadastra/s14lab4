@@ -142,7 +142,6 @@ class Scatter {
                         // console.log(x)
                         // console.log(y)
 
-
                         // Append rect
                         g.append('circle')
                             .attr('cx', x)
