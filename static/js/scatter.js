@@ -94,7 +94,7 @@ class Scatter {
         vis.expmap = vis.data.map(d => d.experience_yr);
         vis.timemap = vis.data.map(d => d.hw1_hrs);
         vis.agemap = vis.data.map(d => d.age);
-
+        console.log(vis.expmap)
         // Create 2D Array for graphing
         for (let i = 0; i < vis.timemap.length; i++){
             vis.graph_data.push([vis.expmap[i], vis.timemap[i], vis.agemap[i]]);
